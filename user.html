@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>משמרות עובדים</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h2>בחר את המשמרות שלך</h2>
+  <table id="shiftsTable">
+    <tr>
+      <th>משמרת</th>
+      <th>ראשון</th>
+      <th>שני</th>
+      <th>שלישי</th>
+      <th>רביעי</th>
+      <th>חמישי</th>
+      <th>מוצ״ש</th>
+    </tr>
+    <tr>
+      <td>דלפק בוקר</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td>
+    </tr>
+    <tr>
+      <td>מטבח בוקר</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td>
+    </tr>
+    <tr>
+      <td>דלפק ערב</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td>
+    </tr>
+    <tr>
+      <td>מטבח ערב</td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td><td><input type="checkbox"></td>
+    </tr>
+  </table>
+
+  <button onclick="submitShifts()">הגש משמרות</button>
+
+  <script>
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycby7hIHWxSqrQ3kXaKrN9kzFRvfLLe2w-JQGfiVk3w0/dev"; // החלף כאן בקישור שלך
+
+    async function submitShifts(){
+      const table = document.getElementById("shiftsTable");
+      const user = localStorage.getItem("currentUser");
+
+      for(let r=1; r<table.rows.length; r++){
+        let shift = table.rows[r].cells[0].innerText;
+        for(let c=1; c<table.rows[r].cells.length; c++){
+          let day = table.rows[0].cells[c].innerText;
+          let checked = table.rows[r].cells[c].querySelector("input").checked;
+          if(checked){
+            await fetch(WEB_APP_URL, {
+              method:"POST",
+              body: JSON.stringify({action:"submit", user, day, shift}),
+              headers: {"Content-Type":"application/json"}
+            });
+          }
+        }
+      }
+      alert("המשמרות שלך הוגשו!");
+      window.location.href = "index.html";
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>כניסה למשמרות</title>
+</head>
+<body>
+  <h2>הכנס שם<!DOCTYPE html>
+  <html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+  </head>
+  <body>
+    
+  </body>
+  </html></h2>
+  <input id="nameInput" placeholder="שם או סיסמה">
+  <button onclick="login()">המשך</button>
+
+  <script>
+    const secretAdmin = "2727";
+
+    function login(){
+      const name = document.getElementById('nameInput').value.trim();
+      if(name === "") return alert("כתוב שם!");
+      if(name === secretAdmin){
+        window.location.href = "admin.html";
+      } else {
+        localStorage.setItem('currentUser', name);
+        window.location.href = "user.html";
+      }
+    }
+  </script>
+</body>
+</html>

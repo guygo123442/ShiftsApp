@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>מנהלים - משמרות</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h2>עמוד מנהלים - כל ההגשות השבוע</h2>
+  <button onclick="resetShifts()">איפוס משמרות</button>
+  <table id="adminTable">
+    <tr>
+      <th>משמרת</th>
+      <th>ראשון</th>
+      <th>שני</th>
+      <th>שלישי</th>
+      <th>רביעי</th>
+      <th>חמישי</th>
+      <th>מוצ״ש</th>
+    </tr>
+  </table>
+
+  <script>
+    const WEB_APP_URL = "https://script.google.com/macros/s/AKfycby7hIHWxSqrQ3kXaKrN9kzFRvfLLe2w-JQGfiVk3w0/dev";
+    const shifts = ["דלפק בוקר","מטבח בוקר","דלפק ערב","מטבח ערב"];
+    const days = ["ראשון","שני","שלישי","רביעי","חמישי","מוצ״ש"];
+
+    async function loadTable(){
+      const res = await fetch(WEB_APP_URL);
+      const submissions = await res.json();
+
+      const table = document.getElementById("adminTable");
+      table.querySelectorAll("tr:not(:first-child)").forEach(r=>r.remove());
+
+      shifts.forEach(shift=>{
+        const row = document.createElement("tr");
+        const shiftCell = document.createElement("td");
+        shiftCell.innerText = shift;
+        row.appendChild(shiftCell);
+
+        days.forEach(day=>{
+          const cell = document.createElement("td");
+          const names = submissions.filter(s => s.shift===shift && s.day===day).map(s=>s.user);
+          names.forEach(name=>{
+            const label = document.createElement("label");
+            const checkbox = document.createElement("input");
+            checkbox.type="checkbox";
+            label.appendChild(checkbox);
+            label.appendChild(document.createTextNode(name));
+            cell.appendChild(label);
+            cell.appendChild(document.createElement("br"));
+          });
+          row.appendChild(cell);
+        });
+        table.appendChild(row);
+      });
+    }
+
+    async function resetShifts(){
+      if(confirm("אתה בטוח שאתה רוצה לאפס את כל ההגשות?"))
+        await fetch}
