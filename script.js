@@ -35,3 +35,4 @@ function submitShifts(){
 if(window.location.href.includes("admin.html")){
   document.getElementById("allData").innerText = JSON.stringify(submissions, null, 2);
 }
+
